@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+      
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+```
+
+## 📁 **Struktur Repository yang Baik**
+```
+repository/
+├── .github/
+│   └── workflows/
+│       └── pages.yml
+├── assets/
+│   ├── css/
+│   ├── js/
+│   └── images/
+├── index.html
+├── README.md
+└── sitemap.xml
