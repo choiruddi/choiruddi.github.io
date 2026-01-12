@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Akademik</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+            animation: fadeIn 1s ease-in;
+        }
+
+        header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .search-bar {
+            max-width: 600px;
+            margin: 30px auto;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1em;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .posts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .post-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .post-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: white;
+        }
+
+        .post-category {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-bottom: 10px;
+        }
+
+        .post-title {
+            font-size: 1.5em;
+            margin: 10px 0;
+        }
+
+        .post-meta {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        .post-body {
+            padding: 20px;
+        }
+
+        .post-excerpt {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .post-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            color: #667eea;
+        }
+
+        .read-more {
+            display: inline-block;
+            margin-top: 15px;
+            color: #667eea;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .read-more:hover {
+            color: #764ba2;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+
+        .filter-btn {
+            padding: 10px 25px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: white;
+            color: #667eea;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: white;
+            margin-top: 60px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+
+            .posts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Blog Akademik</h1>
+            <p>Berbagi Pengetahuan, Inspirasi, dan Penelitian</p>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 Cari artikel, topik, atau kata kunci...">
+            </div>
+
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-category="all">Semua</button>
+                <button class="filter-btn" data-category="penelitian">Penelitian</button>
+                <button class="filter-btn" data-category="tutorial">Tutorial</button>
+                <button class="filter-btn" data-category="review">Review Literatur</button>
+                <button class="filter-btn" data-category="opini">Opini</button>
+            </div>
+        </header>
+
+        <div class="posts-grid" id="postsGrid">
+            <!-- Posts akan ditambahkan di sini -->
+        </div>
+
+        <footer>
+            <p>&copy; 2025 Blog Akademik | Dibuat dengan ❤️ untuk berbagi pengetahuan</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Hosted on GitHub Pages</p>
+        </footer>
+    </div>
+
+    <script>
+        const posts = [
+            {
+                category: "penelitian",
+                title: "Metodologi Penelitian Kualitatif dalam Ilmu Sosial",
+                author: "Dr. Ahmad Fauzi",
+                date: "10 Januari 2025",
+                excerpt: "Eksplorasi mendalam tentang pendekatan penelitian kualitatif, teknik pengumpulan data, dan analisis dalam konteks ilmu sosial modern.",
+                tags: ["Metodologi", "Kualitatif", "Ilmu Sosial"],
+                link: "#"
+            },
+            {
+                category: "tutorial",
+                title: "Panduan Lengkap Menulis Artikel Ilmiah",
+                author: "Prof. Siti Nurhaliza",
+                date: "8 Januari 2025",
+                excerpt: "Langkah demi langkah menulis artikel ilmiah berkualitas, dari pemilihan topik hingga publikasi di jurnal terakreditasi.",
+                tags: ["Penulisan", "Artikel", "Publikasi"],
+                link: "#"
+            },
+            {
+                category: "review",
+                title: "Review: Teori Pembelajaran Konstruktivisme",
+                author: "Dr. Budi Santoso",
+                date: "5 Januari 2025",
+                excerpt: "Tinjauan komprehensif terhadap teori konstruktivisme dalam pendidikan, mulai dari Piaget hingga aplikasi kontemporer.",
+                tags: ["Pendidikan", "Teori", "Konstruktivisme"],
+                link: "#"
+            },
+            {
+                category: "opini",
+                title: "Masa Depan Pendidikan di Era Digital",
+                author: "Maria Wijaya, M.Pd",
+                date: "3 Januari 2025",
+                excerpt: "Refleksi tentang transformasi pendidikan di era digital dan tantangan yang harus dihadapi oleh pendidik masa kini.",
+                tags: ["Pendidikan", "Digital", "Transformasi"],
+                link: "#"
+            },
+            {
+                category: "penelitian",
+                title: "Analisis Statistik dengan R untuk Pemula",
+                author: "Dr. Rina Kusuma",
+                date: "1 Januari 2025",
+                excerpt: "Pengenalan praktis penggunaan R dalam analisis statistik untuk penelitian akademik dengan contoh kasus nyata.",
+                tags: ["Statistik", "R", "Data Science"],
+                link: "#"
+            },
+            {
+                category: "tutorial",
+                title: "Tips Manajemen Referensi dengan Zotero",
+                author: "Hendra Wijaya, S.Kom",
+                date: "28 Desember 2024",
+                excerpt: "Panduan praktis menggunakan Zotero untuk mengelola referensi akademik dan mempermudah penulisan sitasi.",
+                tags: ["Zotero", "Referensi", "Produktivitas"],
+                link: "#"
+            }
+        ];
+
+        function renderPosts(postsToRender) {
+            const grid = document.getElementById('postsGrid');
+            grid.innerHTML = '';
+            
+            postsToRender.forEach((post, index) => {
+                const postCard = document.createElement('div');
+                postCard.className = 'post-card';
+                postCard.style.animationDelay = `${index * 0.1}s`;
+                
+                postCard.innerHTML = `
+                    <div class="post-header">
+                        <span class="post-category">${post.category.toUpperCase()}</span>
+                        <h2 class="post-title">${post.title}</h2>
+                        <div class="post-meta">
+                            <span>✍️ ${post.author}</span> | <span>📅 ${post.date}</span>
+                        </div>
+                    </div>
+                    <div class="post-body">
+                        <p class="post-excerpt">${post.excerpt}</p>
+                        <div class="post-tags">
+                            ${post.tags.map(tag => `<span class="tag">#${tag}</span>`).join('')}
+                        </div>
+                        <a href="${post.link}" class="read-more">Baca Selengkapnya →</a>
+                    </div>
+                `;
+                
+                grid.appendChild(postCard);
+            });
+        }
+
+        // Filter functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const category = this.dataset.category;
+                const filtered = category === 'all' 
+                    ? posts 
+                    : posts.filter(post => post.category === category);
+                
+                renderPosts(filtered);
+            });
+        });
+
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const filtered = posts.filter(post => 
+                post.title.toLowerCase().includes(searchTerm) ||
+                post.excerpt.toLowerCase().includes(searchTerm) ||
+                post.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+                post.author.toLowerCase().includes(searchTerm)
+            );
+            
+            renderPosts(filtered);
+        });
+
+        // Initial render
+        renderPosts(posts);
+    </script>
+</body>
+</html>
